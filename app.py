@@ -2365,13 +2365,13 @@ def uploaded_file(filename):
 # =========================================================
 # START APPLICATION
 # =========================================================
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+initialize_database()
+if __name__ == '__main__':
 
-if __name__ == "__main__":
-
-    initialize_database()
 
     app.run(
-        host="0.0.0.0",
+        host='0.0.0.0',
         port=int(
             os.environ.get(
                 "PORT",
