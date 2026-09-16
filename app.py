@@ -25,7 +25,7 @@ from datetime import datetime
 # APP CONFIGURATION
 # =========================================================
 
-app = Flask(__name__, template_folder="Templates")
+app = Flask(__name__, template_folder="templates")
 
 app.secret_key = "campusfix-hackathon-secret-key"
 
