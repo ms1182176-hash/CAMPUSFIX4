@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+
+    <div>
+        <h1>Authority Dashboard 🧑‍💼</h1>
+        <p>Manage and resolve campus issues efficiently.</p>
+    </div>
+
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+
+</div>
+
+
+<!-- STATISTICS -->
+
+<section class="admin-stats">
+
+    <div class="admin-stat-card">
+        <span>📋</span>
+        <p>Total Issues</p>
+        <h2>{{ stats["total"] }}</h2>
+    </div>
+
+    <div class="admin-stat-card">
+        <span>🆕</span>
+        <p>New Issues</p>
+        <h2>{{ stats["new"] }}</h2>
+    </div>
+
+    <div class="admin-stat-card">
+        <span>🔄</span>
+        <p>In Progress</p>
+        <h2>{{ stats["progress"] }}</h2>
+    </div>
+
+    <div class="admin-stat-card">
+        <span>✅</span>
+        <p>Resolved</p>
+        <h2>{{ stats["resolved"] }}</h2>
+    </div>
+
+    <div class="admin-stat-card high-stat">
+        <span>🚨</span>
+        <p>High Priority</p>
+        <h2>{{ stats["high"] }}</h2>
+    </div>
+
+</section>
+
+
+<!-- FILTERS -->
+
+<div class="admin-section">
+
+    <div class="section-title">
+        <h2>Reported Issues</h2>
+        <p>Review, assign and update campus complaints.</p>
+    </div>
+
+    <div class="filter-box">
+
+        <form method="GET">
+
+            <div class="filter-field">
+
+                <label>Status</label>
+
+                <select name="status">
+
+                    <option value="All">All Statuses</option>
+
+                    {% for status in statuses %}
+
+                        <option
+                            value="{{ status }}"
+                            {% if status_filter == status %}selected{% endif %}
+                        >
+                            {{ status }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-field">
+
+                <label>Priority</label>
+
+                <select name="priority">
+
+                    <option value="All">All Priorities</option>
+
+                    <option
+                        value="High"
+                        {% if priority_filter == "High" %}selected{% endif %}
+                    >
+                        High
+                    </option>
+
+                    <option
+                        value="Medium"
+                        {% if priority_filter == "Medium" %}selected{% endif %}
+                    >
+                        Medium
+                    </option>
+
+                    <option
+                        value="Low"
+                        {% if priority_filter == "Low" %}selected{% endif %}
+                    >
+                        Low
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button type="submit">
+                Apply Filters 🔎
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ISSUES -->
+
+    {% if issues %}
+
+        <div class="admin-issue-list">
+
+            {% for issue in issues %}
+
+                <div class="admin-issue-card">
+
+                    <div class="admin-issue-header">
+
+                        <div>
+
+                            <span class="admin-issue-id">
+                                Issue #{{ issue["id"] }}
+                            </span>
+
+                            <h3>
+                                {{ issue["category"] }}
+                            </h3>
+
+                        </div>
+
+                        <div class="admin-badges">
+
+                            <span class="priority {{ issue['priority']|lower }}">
+                                {{ issue["priority"] }}
+                            </span>
+
+                            <span class="status">
+                                {{ issue["status"] }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-issue-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            {{ issue["location"] }}
+
+                            {% if issue["room"] %}
+                                • Room {{ issue["room"] }}
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            👤 <strong>Reported by:</strong>
+
+                            {% if issue["anonymous"] %}
+                                Anonymous Student
+                            {% else %}
+                                {{ issue["student_name"] }}
+                            {% endif %}
+                        </p>
+
+                        <p class="admin-description">
+                            {{ issue["description"] }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- UPDATE FORM -->
+
+                    <div class="admin-update-box">
+
+                        <h4>🔧 Manage Issue</h4>
+
+                        <form
+                            method="POST"
+                            action="/admin/update/{{ issue['id'] }}"
+                        >
+
+                            <div class="update-grid">
+
+                                <div>
+
+                                    <label>Status</label>
+
+                                    <select name="status">
+
+                                        {% for status in statuses %}
+
+                                            <option
+                                                value="{{ status }}"
+                                                {% if issue["status"] == status %}
+                                                    selected
+                                                {% endif %}
+                                            >
+                                                {{ status }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label>Assign To</label>
+
+                                    <input
+                                        type="text"
+                                        name="assigned_to"
+                                        value="{{ issue['assigned_to'] or '' }}"
+                                        placeholder="Maintenance Team"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <label>Authority Note</label>
+
+                            <textarea
+                                name="admin_note"
+                                rows="3"
+                                placeholder="Add an update or note..."
+                            >{{ issue["admin_note"] or "" }}</textarea>
+
+
+                            <div class="admin-action-row">
+
+                                <button type="submit">
+                                    Update Issue
+                                </button>
+
+                                <a href="/issue/{{ issue['id'] }}">
+                                    View Full Details →
+                                </a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">🎉</div>
+
+            <h2>No Issues Found</h2>
+
+            <p>
+                There are no issues matching the selected filters.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

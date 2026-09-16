@@ -1,0 +1,680 @@
+{% extends "base.html" %}
+
+{% block title %}CampusFix - Home{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <div class="hero-logo-title">
+
+            <img
+                src="{{ url_for('static', filename='logo.png') }}"
+                alt="CampusFix Logo"
+                class="hero-logo-large"
+            >
+
+            <h1>CampusFix</h1>
+
+        </div>
+
+        <h2>Your Campus. Your Voice.</h2>
+
+        <p>
+            Report campus problems quickly and help your college
+            resolve them faster.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/login">
+                <button>Login</button>
+            </a>
+
+            <a href="/register">
+                <button>Register</button>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= QR LOGIN ================= -->
+
+<section class="qr-home-section">
+
+    <div class="qr-home-card">
+
+        <div class="qr-home-icon">
+            📱
+        </div>
+
+        <div class="qr-home-content">
+
+            <h2>
+                Quick Login with QR
+            </h2>
+
+            <p>
+                Have your personal CampusFix QR?
+                Scan it and login instantly without
+                entering your password.
+            </p>
+
+            <div class="qr-buttons">
+
+                <button
+                    type="button"
+                    onclick="startQRScanner()"
+                    class="qr-scan-button"
+                >
+                    📷 Scan with Camera
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="document.getElementById('qr-file').click()"
+                    class="qr-gallery-button"
+                >
+                    🖼️ Scan from Gallery
+                </button>
+
+            </div>
+
+            <!-- Hidden gallery input -->
+
+            <input
+                type="file"
+                id="qr-file"
+                accept="image/*"
+                style="display: none;"
+                onchange="scanQRFromGallery(event)"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- CAMERA SCANNER -->
+
+    <div
+        id="qr-scanner-container"
+        class="qr-scanner-container"
+        style="display: none;"
+    >
+
+        <h3>
+            Scan your CampusFix QR
+        </h3>
+
+        <p>
+            Allow camera access and place the QR
+            inside the frame.
+        </p>
+
+        <div id="qr-reader"></div>
+
+        <button
+            type="button"
+            onclick="stopQRScanner()"
+            class="qr-stop-button"
+        >
+            Close Scanner
+        </button>
+
+    </div>
+
+
+    <!-- GALLERY RESULT -->
+
+    <div
+        id="gallery-result"
+        class="qr-scanner-container"
+        style="display: none;"
+    >
+
+        <h3>
+            🖼️ Checking QR Image...
+        </h3>
+
+        <p id="gallery-status">
+            Please wait.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <h3>
+            📝 Easy Reporting
+        </h3>
+
+        <p>
+            Report water leakage, AC problems,
+            electricity issues and more.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <h3>
+            🚨 Smart Priority
+        </h3>
+
+        <p>
+            Important issues can automatically
+            receive higher priority.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <h3>
+            🎙️ Voice Complaint
+        </h3>
+
+        <p>
+            Speak your problem and let CampusFix
+            convert it into a structured complaint.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <h3>
+            📊 Track Issues
+        </h3>
+
+        <p>
+            Track your complaint from submission
+            to resolution.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LEADERSHIP ================= -->
+
+<section class="leadership-section">
+
+    <div class="section-heading">
+
+        <span>
+            OUR LEADERSHIP
+        </span>
+
+        <h2>
+            Guided by Vision
+        </h2>
+
+        <p>
+            Meet the leadership behind our educational
+            ecosystem.
+        </p>
+
+    </div>
+
+
+    <div class="leadership-grid">
+
+
+        <a
+            href="/authority/1"
+            class="authority-card"
+        >
+
+            <div class="authority-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='leadership/sandeep.jpg'
+                    ) }}"
+                    alt="Shri Sandeep Singh"
+                >
+
+            </div>
+
+
+            <div class="authority-info">
+
+                <h3>
+                    Shri Sandeep Singh
+                </h3>
+
+                <p>
+                    Chairman
+                </p>
+
+                <span>
+                    View Profile →
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <a
+            href="/authority/2"
+            class="authority-card"
+        >
+
+            <div class="authority-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='leadership/kanika.jpg'
+                    ) }}"
+                    alt="Mrs. Kanika Singh"
+                >
+
+            </div>
+
+
+            <div class="authority-info">
+
+                <h3>
+                    Mrs. Kanika Singh
+                </h3>
+
+                <p>
+                    Managing Director
+                </p>
+
+                <span>
+                    View Profile →
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <a
+            href="/authority/3"
+            class="authority-card"
+        >
+
+            <div class="authority-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='leadership/amresh.jpg'
+                    ) }}"
+                    alt="Mr. Amresh Kumar"
+                >
+
+            </div>
+
+
+            <div class="authority-info">
+
+                <h3>
+                    Mr. Amresh Kumar
+                </h3>
+
+                <p>
+                    Executive Director
+                </p>
+
+                <span>
+                    View Profile →
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- QR LIBRARY -->
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+
+<script>
+
+let qrScanner = null;
+
+
+/* =========================================
+   CAMERA QR SCANNER
+========================================= */
+
+function startQRScanner() {
+
+    const scannerContainer =
+        document.getElementById(
+            "qr-scanner-container"
+        );
+
+
+    scannerContainer.style.display =
+        "block";
+
+
+    document.getElementById(
+        "gallery-result"
+    ).style.display = "none";
+
+
+    if (qrScanner !== null) {
+
+        return;
+
+    }
+
+
+    qrScanner =
+        new Html5Qrcode(
+            "qr-reader"
+        );
+
+
+    qrScanner.start(
+
+        {
+            facingMode: "environment"
+        },
+
+        {
+
+            fps: 10,
+
+            qrbox: {
+                width: 250,
+                height: 250
+            }
+
+        },
+
+
+        function(decodedText) {
+
+            handleQRResult(
+                decodedText
+            );
+
+        },
+
+
+        function(errorMessage) {
+
+            // Ignore continuous scanner errors.
+
+        }
+
+    ).catch(
+
+        function(error) {
+
+            console.error(error);
+
+
+            alert(
+                "Camera could not be started. Please allow camera permission."
+            );
+
+
+            scannerContainer.style.display =
+                "none";
+
+
+            qrScanner = null;
+
+        }
+
+    );
+
+}
+
+
+/* =========================================
+   GALLERY QR SCANNER
+========================================= */
+
+function scanQRFromGallery(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    if (!file) {
+
+        return;
+
+    }
+
+
+    const resultBox =
+        document.getElementById(
+            "gallery-result"
+        );
+
+
+    const status =
+        document.getElementById(
+            "gallery-status"
+        );
+
+
+    resultBox.style.display =
+        "block";
+
+
+    status.innerText =
+        "Reading QR code from selected image...";
+
+
+    const galleryScanner =
+        new Html5Qrcode(
+            "gallery-result"
+        );
+
+
+    galleryScanner.scanFile(
+        file,
+        true
+    )
+
+    .then(
+
+        function(decodedText) {
+
+            handleQRResult(
+                decodedText
+            );
+
+
+            galleryScanner.clear();
+
+        }
+
+    )
+
+    .catch(
+
+        function(error) {
+
+            console.error(error);
+
+
+            status.innerText =
+                "❌ QR code could not be detected. Please select a clear CampusFix QR screenshot.";
+
+
+            setTimeout(
+
+                function() {
+
+                    resultBox.style.display =
+                        "none";
+
+                },
+
+                3000
+
+            );
+
+
+            galleryScanner.clear();
+
+        }
+
+    );
+
+
+    /* Allow selecting the same image again */
+
+    event.target.value = "";
+
+}
+
+
+/* =========================================
+   HANDLE QR RESULT
+========================================= */
+
+function handleQRResult(decodedText) {
+
+    console.log(
+        "QR scanned:",
+        decodedText
+    );
+
+
+    if (
+        decodedText.includes(
+            "/qr-login/"
+        )
+    ) {
+
+
+        if (qrScanner !== null) {
+
+            qrScanner.stop()
+
+            .then(
+
+                function() {
+
+                    qrScanner.clear();
+
+                    qrScanner = null;
+
+                    window.location.href =
+                        decodedText;
+
+                }
+
+            )
+
+            .catch(
+
+                function() {
+
+                    window.location.href =
+                        decodedText;
+
+                }
+
+            );
+
+        }
+
+        else {
+
+            window.location.href =
+                decodedText;
+
+        }
+
+
+    }
+
+    else {
+
+        alert(
+            "❌ This is not a valid CampusFix QR."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   STOP CAMERA
+========================================= */
+
+function stopQRScanner() {
+
+    if (qrScanner !== null) {
+
+        qrScanner.stop()
+
+        .then(
+
+            function() {
+
+                qrScanner.clear();
+
+                qrScanner = null;
+
+
+                document.getElementById(
+                    "qr-scanner-container"
+                ).style.display =
+                    "none";
+
+            }
+
+        );
+
+    }
+
+    else {
+
+        document.getElementById(
+            "qr-scanner-container"
+        ).style.display =
+            "none";
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}

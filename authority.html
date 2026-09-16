@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ authority["name"] }} - CampusFix
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="authority-profile-page">
+
+
+    <!-- BACK -->
+
+    <a
+        href="/"
+        class="authority-back"
+    >
+        ← Back to CampusFix
+    </a>
+
+
+
+    <!-- PROFILE -->
+
+    <div class="authority-profile-card">
+
+
+        <!-- PHOTO -->
+
+        <div class="authority-profile-photo">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='leadership/' + authority['photo']
+                ) }}"
+                alt="{{ authority['name'] }}"
+            >
+
+        </div>
+
+
+
+        <!-- INFORMATION -->
+
+        <div class="authority-profile-info">
+
+
+            <span class="authority-profile-role">
+                {{ authority["role"] }}
+            </span>
+
+
+            <h1>
+                {{ authority["name"] }}
+            </h1>
+
+
+            <p class="authority-designation">
+                {{ authority["designation"] }}
+            </p>
+
+
+
+            <div class="profile-divider"></div>
+
+
+
+            <!-- ABOUT -->
+
+            <div class="profile-section">
+
+                <h2>
+                    About
+                </h2>
+
+                <p>
+                    {{ authority["about"] }}
+                </p>
+
+            </div>
+
+
+
+            <!-- VISION -->
+
+            <div class="profile-section">
+
+                <h2>
+                    Leadership & Vision
+                </h2>
+
+                <p>
+                    {{ authority["vision"] }}
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FOOTER MESSAGE -->
+
+    <div class="authority-profile-footer">
+
+        <span>
+            CAMPUSFIX
+        </span>
+
+        <p>
+            Connecting students, campus and leadership.
+        </p>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

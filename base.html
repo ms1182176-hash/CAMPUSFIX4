@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        CampusFix
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<nav>
+
+    <a
+        href="/"
+        class="logo-link"
+    >
+
+        <img
+            src="{{ url_for('static', filename='logo.png') }}"
+            alt="CampusFix Logo"
+            class="logo"
+        >
+
+    </a>
+
+
+    {% if session.get("user_id") %}
+
+        {% if session.get("role") == "student" %}
+
+            <a href="/student">
+                Dashboard
+            </a>
+
+            <a href="/my-qr">
+                🎟️ My QR
+            </a>
+
+            <a href="/health">
+                🩺 Health Vault
+            </a>
+
+            <a href="/contact">
+                📞 Contact Us
+            </a>
+
+        {% endif %}
+
+
+        {% if session.get("role") == "admin" %}
+
+            <a href="/admin">
+                Admin Dashboard
+            </a>
+
+            <a href="/admin/health">
+                🚑 Emergency Health
+            </a>
+
+            <a href="/admin/contact-messages">
+                📨 Contact Messages
+            </a>
+
+        {% endif %}
+
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    {% endif %}
+
+</nav>
+
+
+<main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+</body>
+
+</html>

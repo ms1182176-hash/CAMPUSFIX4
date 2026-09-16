@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Health Vault - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-container">
+
+        <div class="form-icon">🩺</div>
+
+        <h1>Health Vault</h1>
+
+        <p class="subtitle">
+            Add your basic health information for emergency situations.
+        </p>
+
+        <form method="POST">
+
+            <label>🩸 Blood Group</label>
+
+            <select name="blood_group">
+                <option value="">Select Blood Group</option>
+
+                <option value="A+"
+                    {% if health and health['blood_group'] == 'A+' %}selected{% endif %}>
+                    A+
+                </option>
+
+                <option value="A-"
+                    {% if health and health['blood_group'] == 'A-' %}selected{% endif %}>
+                    A-
+                </option>
+
+                <option value="B+"
+                    {% if health and health['blood_group'] == 'B+' %}selected{% endif %}>
+                    B+
+                </option>
+
+                <option value="B-"
+                    {% if health and health['blood_group'] == 'B-' %}selected{% endif %}>
+                    B-
+                </option>
+
+                <option value="AB+"
+                    {% if health and health['blood_group'] == 'AB+' %}selected{% endif %}>
+                    AB+
+                </option>
+
+                <option value="AB-"
+                    {% if health and health['blood_group'] == 'AB-' %}selected{% endif %}>
+                    AB-
+                </option>
+
+                <option value="O+"
+                    {% if health and health['blood_group'] == 'O+' %}selected{% endif %}>
+                    O+
+                </option>
+
+                <option value="O-"
+                    {% if health and health['blood_group'] == 'O-' %}selected{% endif %}>
+                    O-
+                </option>
+
+            </select>
+
+
+            <label>⚠️ Allergies</label>
+
+            <textarea
+                name="allergies"
+                rows="3"
+                placeholder="Example: Dust allergy, peanut allergy, or None"
+            >{{ health['allergies'] if health else '' }}</textarea>
+
+
+            <label>💊 Ongoing Treatment</label>
+
+            <textarea
+                name="ongoing_treatment"
+                rows="4"
+                placeholder="Mention any ongoing treatment or medication"
+            >{{ health['ongoing_treatment'] if health else '' }}</textarea>
+
+
+            <label>🚨 Emergency Notes</label>
+
+            <textarea
+                name="emergency_notes"
+                rows="4"
+                placeholder="Anything important that authorities should know during an emergency"
+            >{{ health['emergency_notes'] if health else '' }}</textarea>
+
+
+            <div class="form-actions">
+
+                <a href="/student" class="back-button">
+                    ← Back
+                </a>
+
+                <button type="submit">
+                    Save Health Details 💾
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

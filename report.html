@@ -1,0 +1,631 @@
+{% extends "base.html" %}
+
+{% block title %}Report Issue - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-container report-container">
+
+        <div class="form-icon">🛠️</div>
+
+        <h1>Report a Campus Issue</h1>
+
+        <p class="subtitle">
+            Help us make your campus better, safer and more comfortable.
+        </p>
+
+
+        <!-- ================= VOICE COMPLAINT ================= -->
+
+        <div class="voice-report-box">
+
+            <div class="voice-header">
+
+                <div class="voice-icon">
+                    🎙️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Voice Complaint
+                    </h3>
+
+                    <p>
+                        Speak your problem and CampusFix
+                        will organize the complaint for you.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="voice-button"
+                class="voice-button"
+                onclick="startVoiceComplaint()"
+            >
+                🎙️ Start Speaking
+            </button>
+
+
+            <p
+                id="voice-status"
+                class="field-hint"
+            >
+                Chrome or Edge recommended.
+            </p>
+
+
+            <div
+                id="voice-result"
+                class="ai-result"
+                style="display: none;"
+            ></div>
+
+        </div>
+
+
+        <!-- ================= NORMAL FORM ================= -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label>
+                Issue Category
+            </label>
+
+            <select
+                name="category"
+                id="category"
+                required
+            >
+
+                <option value="">
+                    Select an issue category
+                </option>
+
+                {% for category in categories %}
+
+                    <option value="{{ category }}">
+                        {{ category }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>
+                Location
+            </label>
+
+            <select
+                name="location"
+                id="location"
+                required
+            >
+
+                <option value="">
+                    Select campus location
+                </option>
+
+                {% for location in locations %}
+
+                    <option value="{{ location }}">
+                        {{ location }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>
+                Room / Area Number
+            </label>
+
+            <input
+                type="text"
+                name="room"
+                id="room"
+                placeholder="Example: 204"
+            >
+
+            <p class="field-hint">
+                Optional. Enter the room number if applicable.
+            </p>
+
+
+            <label>
+                Describe the Problem
+            </label>
+
+            <textarea
+                name="description"
+                id="description"
+                rows="6"
+                placeholder="Describe the problem clearly..."
+                required
+            ></textarea>
+
+
+            <label>
+                Upload Photo
+            </label>
+
+            <div class="upload-box">
+
+                <input
+                    type="file"
+                    name="photo"
+                    accept=".png,.jpg,.jpeg,.webp"
+                >
+
+                <p>
+                    📷 Upload a photo as evidence
+                </p>
+
+                <small>
+                    PNG, JPG, JPEG or WEBP
+                </small>
+
+            </div>
+
+
+            <label class="checkbox-label">
+
+                <input
+                    type="checkbox"
+                    name="anonymous"
+                >
+
+                <span>
+                    Report anonymously
+                </span>
+
+            </label>
+
+            <p class="field-hint">
+                Your name will not be displayed to the authority.
+            </p>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="/student"
+                    class="back-button"
+                >
+                    ← Back to Dashboard
+                </a>
+
+                <button type="submit">
+                    Submit Issue 🚀
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let recognition = null;
+let isListening = false;
+
+
+/* =========================================
+   START VOICE COMPLAINT
+========================================= */
+
+function startVoiceComplaint() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Voice recognition is not supported in this browser. Please use Chrome or Edge."
+        );
+
+        return;
+
+    }
+
+
+    if (isListening) {
+
+        recognition.stop();
+
+        return;
+
+    }
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    /*
+        Indian English.
+        This can understand many common
+        Indian English speaking patterns.
+    */
+
+    recognition.lang = "en-IN";
+
+
+    recognition.continuous = false;
+
+
+    recognition.interimResults = false;
+
+
+    const button =
+        document.getElementById(
+            "voice-button"
+        );
+
+
+    const status =
+        document.getElementById(
+            "voice-status"
+        );
+
+
+    button.innerHTML =
+        "🔴 Listening... Click to Stop";
+
+
+    button.classList.add(
+        "listening"
+    );
+
+
+    status.innerText =
+        "Speak clearly. Example: Room 204 AC is not working.";
+
+
+    isListening = true;
+
+
+    recognition.start();
+
+
+    /* =====================================
+       VOICE RESULT
+    ===================================== */
+
+    recognition.onresult =
+        function(event) {
+
+            const transcript =
+                event.results[0][0].transcript;
+
+
+            console.log(
+                "Voice:",
+                transcript
+            );
+
+
+            document.getElementById(
+                "description"
+            ).value = transcript;
+
+
+            status.innerText =
+                "Voice captured. Organizing your complaint...";
+
+
+            parseVoiceComplaint(
+                transcript
+            );
+
+        };
+
+
+    /* =====================================
+       VOICE END
+    ===================================== */
+
+    recognition.onend =
+        function() {
+
+            isListening = false;
+
+
+            button.innerHTML =
+                "🎙️ Start Speaking";
+
+
+            button.classList.remove(
+                "listening"
+            );
+
+        };
+
+
+    /* =====================================
+       VOICE ERROR
+    ===================================== */
+
+    recognition.onerror =
+        function(event) {
+
+            console.error(
+                "Speech recognition error:",
+                event.error
+            );
+
+
+            isListening = false;
+
+
+            button.innerHTML =
+                "🎙️ Start Speaking";
+
+
+            button.classList.remove(
+                "listening"
+            );
+
+
+            if (
+                event.error ===
+                "not-allowed"
+            ) {
+
+                status.innerText =
+                    "❌ Microphone permission was denied.";
+
+            }
+
+            else {
+
+                status.innerText =
+                    "❌ Could not understand the voice. Please try again.";
+
+            }
+
+        };
+
+}
+
+
+/* =========================================
+   SEND TRANSCRIPT TO BACKEND
+========================================= */
+
+function parseVoiceComplaint(transcript) {
+
+    const resultBox =
+        document.getElementById(
+            "voice-result"
+        );
+
+
+    resultBox.style.display =
+        "block";
+
+
+    resultBox.innerHTML =
+        "🤖 <strong>CampusFix is organizing your complaint...</strong>";
+
+
+    fetch(
+        "/voice-parse",
+        {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+
+                transcript:
+                    transcript
+
+            })
+
+        }
+
+    )
+
+    .then(
+        response =>
+            response.json()
+    )
+
+    .then(
+        function(data) {
+
+            console.log(
+                "Voice parser result:",
+                data
+            );
+
+
+            /*
+                Fill category
+            */
+
+            if (data.category) {
+
+                setSelectValue(
+                    "category",
+                    data.category
+                );
+
+            }
+
+
+            /*
+                Fill location
+            */
+
+            if (data.location) {
+
+                setSelectValue(
+                    "location",
+                    data.location
+                );
+
+            }
+
+
+            /*
+                Fill room
+            */
+
+            if (data.room) {
+
+                document.getElementById(
+                    "room"
+                ).value =
+                    data.room;
+
+            }
+
+
+            /*
+                Always keep transcript
+                in description.
+            */
+
+            document.getElementById(
+                "description"
+            ).value =
+                data.description ||
+                transcript;
+
+
+            /*
+                Show result
+            */
+
+            let modeText =
+                data.mode ||
+                "Smart Parser";
+
+
+            let priorityText =
+                data.priority ||
+                "Normal";
+
+
+            resultBox.innerHTML =
+
+                "🤖 <strong>" +
+                modeText +
+                "</strong><br>" +
+
+                "Priority: <strong>" +
+                priorityText +
+                "</strong><br><br>" +
+
+                "Please check the fields below and submit your complaint.";
+
+
+            document.getElementById(
+                "voice-status"
+            ).innerText =
+                "✅ Voice complaint organized successfully.";
+
+        }
+
+    )
+
+    .catch(
+
+        function(error) {
+
+            console.error(
+                error
+            );
+
+
+            resultBox.innerHTML =
+                "⚠️ Voice captured, but automatic organization failed. You can still submit the complaint manually.";
+
+
+            document.getElementById(
+                "voice-status"
+            ).innerText =
+                "Voice transcript added to the description.";
+
+        }
+
+    );
+
+}
+
+
+/* =========================================
+   SELECT VALUE HELPER
+========================================= */
+
+function setSelectValue(
+    selectId,
+    value
+) {
+
+    const select =
+        document.getElementById(
+            selectId
+        );
+
+
+    if (!select || !value) {
+
+        return;
+
+    }
+
+
+    const options =
+        Array.from(
+            select.options
+        );
+
+
+    const match =
+        options.find(
+
+            option =>
+                option.value.toLowerCase() ===
+                value.toLowerCase()
+
+        );
+
+
+    if (match) {
+
+        select.value =
+            match.value;
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+
+    <div>
+        <h1>Student Dashboard 🎓</h1>
+        <p>Welcome back, {{ session["name"] }}!</p>
+    </div>
+
+    <a href="/report">
+        <button>+ Report New Issue</button>
+    </a>
+
+</div>
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <h3>📋 Total Issues</h3>
+        <p>{{ issues|length }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>🔄 Active Issues</h3>
+        <p>
+            {{ issues|selectattr("status", "ne", "Resolved")|list|length }}
+        </p>
+    </div>
+
+    <div class="stat-card">
+        <h3>✅ Resolved</h3>
+        <p>
+            {{ issues|selectattr("status", "equalto", "Resolved")|list|length }}
+        </p>
+    </div>
+
+</section>
+
+<div class="section-title">
+    <h2>My Reported Issues</h2>
+    <p>Track the progress of your campus complaints.</p>
+</div>
+
+{% if issues %}
+
+<div class="issue-grid">
+
+    {% for issue in issues %}
+
+    <div class="issue-card">
+
+        <div class="issue-top">
+
+            <span class="issue-id">
+                #{{ issue["id"] }}
+            </span>
+
+            <span class="priority {{ issue['priority']|lower }}">
+                {{ issue["priority"] }}
+            </span>
+
+        </div>
+
+        <h3>{{ issue["category"] }}</h3>
+
+        <p class="issue-location">
+            📍 {{ issue["location"] }}
+            {% if issue["room"] %}
+                • {{ issue["room"] }}
+            {% endif %}
+        </p>
+
+        <p class="issue-description">
+            {{ issue["description"] }}
+        </p>
+
+        <div class="issue-bottom">
+
+            <span class="status">
+                {{ issue["status"] }}
+            </span>
+
+            <a href="/issue/{{ issue['id'] }}">
+                View Details →
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-state">
+
+    <div class="empty-icon">📝</div>
+
+    <h2>No Issues Reported</h2>
+
+    <p>
+        You haven't reported any campus problems yet.
+    </p>
+
+    <a href="/report">
+        <button>Report Your First Issue</button>
+    </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

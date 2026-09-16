@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Health - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-container" style="max-width: 1100px;">
+
+        <div class="form-icon">🚑</div>
+
+        <h1>Emergency Health Directory</h1>
+
+        <p class="subtitle">
+            Authorized emergency access to student health information.
+        </p>
+
+
+        <form method="GET" style="margin-bottom: 25px;">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ q }}"
+                placeholder="Search student by name or email..."
+            >
+
+            <button type="submit">
+                🔍 Search
+            </button>
+
+        </form>
+
+
+        {% if students %}
+
+            <div style="overflow-x: auto;">
+
+                <table style="width: 100%; border-collapse: collapse;">
+
+                    <thead>
+
+                        <tr>
+                            <th style="padding: 12px; text-align: left;">
+                                Student
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Email
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                🩸 Blood Group
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                ⚠️ Allergies
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                💊 Ongoing Treatment
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                🚨 Emergency Notes
+                            </th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for student in students %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                <strong>
+                                    {{ student['name'] }}
+                                </strong>
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ student['email'] }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                <strong>
+                                    {{ student['blood_group'] or 'Not provided' }}
+                                </strong>
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ student['allergies'] or 'None provided' }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ student['ongoing_treatment'] or 'None provided' }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ student['emergency_notes'] or 'None provided' }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="message">
+                No student health information found.
+            </div>
+
+        {% endif %}
+
+
+        <div class="form-actions">
+
+            <a href="/admin" class="back-button">
+                ← Back to Admin
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

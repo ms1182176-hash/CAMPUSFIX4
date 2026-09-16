@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Issue #{{ issue["id"] }} - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="issue-detail-page">
+
+    <div class="detail-header">
+
+        <div>
+            <p class="detail-label">CAMPUSFIX ISSUE</p>
+
+            <h1>
+                Issue #{{ issue["id"] }}
+            </h1>
+
+            <p class="detail-subtitle">
+                Submitted on {{ issue["created_at"] }}
+            </p>
+        </div>
+
+        <div class="detail-badges">
+
+            <span class="priority {{ issue['priority']|lower }}">
+                {{ issue["priority"] }} Priority
+            </span>
+
+            <span class="detail-status">
+                {{ issue["status"] }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="detail-grid">
+
+        <!-- Main Information -->
+        <div class="detail-card">
+
+            <h2>📋 Issue Information</h2>
+
+            <div class="detail-row">
+                <span>Category</span>
+                <strong>{{ issue["category"] }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Location</span>
+                <strong>{{ issue["location"] }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Room / Area</span>
+                <strong>
+                    {{ issue["room"] or "Not specified" }}
+                </strong>
+            </div>
+
+            <div class="detail-row description-row">
+                <span>Description</span>
+
+                <p>
+                    {{ issue["description"] }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Resolution Information -->
+        <div class="detail-card">
+
+            <h2>🔧 Resolution</h2>
+
+            <div class="detail-row">
+                <span>Assigned To</span>
+
+                <strong>
+                    {{ issue["assigned_to"] or "Not assigned yet" }}
+                </strong>
+            </div>
+
+            <div class="detail-row description-row">
+                <span>Authority Update</span>
+
+                <p>
+                    {{ issue["admin_note"] or "No update has been provided yet." }}
+                </p>
+            </div>
+
+            <div class="detail-row">
+                <span>Last Updated</span>
+
+                <strong>
+                    {{ issue["updated_at"] }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- Photo -->
+        {% if issue["photo"] %}
+
+        <div class="detail-card photo-card">
+
+            <h2>📷 Uploaded Evidence</h2>
+
+            <img
+                src="/uploads/{{ issue['photo'] }}"
+                alt="Uploaded issue evidence"
+                class="issue-photo"
+            >
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Status Timeline -->
+    <div class="detail-card timeline-card">
+
+        <h2>📍 Issue Progress</h2>
+
+        <div class="timeline">
+
+            <div class="timeline-item active">
+                <div class="timeline-dot">✓</div>
+
+                <div>
+                    <strong>Issue Submitted</strong>
+                    <p>Your issue has been submitted successfully.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item
+                {% if issue['status'] in ['Acknowledged', 'Assigned', 'In Progress', 'Resolved'] %}
+                    active
+                {% endif %}
+            ">
+
+                <div class="timeline-dot">✓</div>
+
+                <div>
+                    <strong>Acknowledged</strong>
+                    <p>The authority has received your complaint.</p>
+                </div>
+
+            </div>
+
+            <div class="timeline-item
+                {% if issue['status'] in ['Assigned', 'In Progress', 'Resolved'] %}
+                    active
+                {% endif %}
+            ">
+
+                <div class="timeline-dot">✓</div>
+
+                <div>
+                    <strong>Assigned</strong>
+                    <p>The issue has been assigned to a responsible team.</p>
+                </div>
+
+            </div>
+
+            <div class="timeline-item
+                {% if issue['status'] in ['In Progress', 'Resolved'] %}
+                    active
+                {% endif %}
+            ">
+
+                <div class="timeline-dot">✓</div>
+
+                <div>
+                    <strong>In Progress</strong>
+                    <p>The responsible team is working on the issue.</p>
+                </div>
+
+            </div>
+
+            <div class="timeline-item
+                {% if issue['status'] == 'Resolved' %}
+                    active
+                {% endif %}
+            ">
+
+                <div class="timeline-dot">✓</div>
+
+                <div>
+                    <strong>Resolved</strong>
+                    <p>The reported issue has been resolved.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="detail-actions">
+
+        {% if session["role"] == "admin" %}
+
+            <a href="/admin" class="back-button">
+                ← Back to Admin Dashboard
+            </a>
+
+        {% else %}
+
+            <a href="/student" class="back-button">
+                ← Back to Student Dashboard
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

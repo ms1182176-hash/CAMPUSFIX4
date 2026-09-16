@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - CampusFix{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .contact-premium {
+        min-height: 80vh;
+        padding: 50px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .contact-card {
+        width: 100%;
+        max-width: 850px;
+        background: linear-gradient(145deg, #111111, #080808);
+        border: 1px solid #c9a227;
+        border-radius: 24px;
+        padding: 45px;
+        box-shadow:
+            0 0 0 1px rgba(201, 162, 39, 0.15),
+            0 20px 60px rgba(0, 0, 0, 0.6);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+            90deg,
+            #8c6a16,
+            #f5d76e,
+            #c9a227,
+            #f5d76e,
+            #8c6a16
+        );
+    }
+
+    .contact-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .contact-icon {
+        width: 75px;
+        height: 75px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        background: rgba(201, 162, 39, 0.12);
+        border: 1px solid #c9a227;
+        box-shadow: 0 0 25px rgba(201, 162, 39, 0.12);
+    }
+
+    .contact-header h1 {
+        margin: 0;
+        color: #f5d76e;
+        font-size: 42px;
+        letter-spacing: 1px;
+    }
+
+    .contact-header p {
+        color: #aaa;
+        font-size: 16px;
+        margin-top: 12px;
+    }
+
+    /* PHONE SECTION */
+
+    .phone-section {
+        background: linear-gradient(135deg, #151515, #0d0d0d);
+        border: 1px solid rgba(201, 162, 39, 0.5);
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        box-shadow: inset 0 0 30px rgba(201, 162, 39, 0.04);
+    }
+
+    .phone-info {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .phone-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 14px;
+        background: rgba(201, 162, 39, 0.12);
+        border: 1px solid #c9a227;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+    }
+
+    .phone-text h3 {
+        margin: 0 0 5px;
+        color: #f5d76e;
+        font-size: 18px;
+    }
+
+    .phone-text p {
+        margin: 0;
+        color: #888;
+        font-size: 13px;
+    }
+
+    .phone-number {
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 12px 20px;
+        border: 1px solid #c9a227;
+        border-radius: 10px;
+        transition: 0.25s;
+        white-space: nowrap;
+    }
+
+    .phone-number:hover {
+        background: #c9a227;
+        color: #000;
+        box-shadow: 0 0 20px rgba(201, 162, 39, 0.3);
+    }
+
+    /* FORM */
+
+    .contact-form label {
+        display: block;
+        color: #f5d76e;
+        font-weight: 600;
+        margin-bottom: 8px;
+        margin-top: 20px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        box-sizing: border-box;
+        background: #0c0c0c;
+        color: white;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 15px;
+        font-size: 15px;
+        outline: none;
+        transition: 0.25s;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #c9a227;
+        box-shadow: 0 0 12px rgba(201, 162, 39, 0.12);
+    }
+
+    .contact-form textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .contact-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 28px;
+        gap: 15px;
+    }
+
+    .back-button {
+        text-decoration: none;
+        color: #aaa;
+        border: 1px solid #333;
+        padding: 13px 22px;
+        border-radius: 10px;
+        transition: 0.25s;
+    }
+
+    .back-button:hover {
+        color: #fff;
+        border-color: #777;
+    }
+
+    .send-button {
+        border: 1px solid #c9a227;
+        background: linear-gradient(135deg, #c9a227, #f5d76e);
+        color: #080808;
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    .send-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(201, 162, 39, 0.25);
+    }
+
+    @media (max-width: 650px) {
+
+        .contact-card {
+            padding: 28px 20px;
+        }
+
+        .contact-header h1 {
+            font-size: 32px;
+        }
+
+        .phone-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .phone-number {
+            text-align: center;
+        }
+
+        .contact-actions {
+            flex-direction: column-reverse;
+        }
+
+        .back-button,
+        .send-button {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    }
+
+</style>
+
+
+<div class="contact-premium">
+
+    <div class="contact-card">
+
+        <!-- HEADER -->
+
+        <div class="contact-header">
+
+            <div class="contact-icon">
+                📞
+            </div>
+
+            <h1>Contact Us</h1>
+
+            <p>
+                Have a question, suggestion or concern?
+                We're here to help.
+            </p>
+
+        </div>
+
+
+        <!-- PHONE CARD -->
+
+        <div class="phone-section">
+
+            <div class="phone-info">
+
+                <div class="phone-icon">
+                    📱
+                </div>
+
+                <div class="phone-text">
+
+                    <h3>College Support</h3>
+
+                    <p>
+                        For urgent assistance, contact us directly
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="tel:9560633605"
+                class="phone-number"
+            >
+                9560633605
+            </a>
+
+        </div>
+
+
+        <!-- CONTACT FORM -->
+
+        <form
+            method="POST"
+            class="contact-form"
+        >
+
+            <label>
+                Subject
+            </label>
+
+            <input
+                type="text"
+                name="subject"
+                placeholder="What do you need help with?"
+                required
+            >
+
+
+            <label>
+                Your Message
+            </label>
+
+            <textarea
+                name="message"
+                placeholder="Write your message or concern here..."
+                required
+            ></textarea>
+
+
+            <div class="contact-actions">
+
+                <a
+                    href="{% if session['role'] == 'admin' %}/admin{% else %}/student{% endif %}"
+                    class="back-button"
+                >
+                    ← Back
+                </a>
+
+                <button
+                    type="submit"
+                    class="send-button"
+                >
+                    Send Message&nbsp; 📤
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

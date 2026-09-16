@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Login - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-container">
+
+        <h1>Welcome Back 👋</h1>
+
+        <p class="subtitle">
+            Login to access your CampusFix account.
+        </p>
+
+        <form method="POST">
+
+            <label>Email Address</label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <p class="bottom-text">
+            Don't have an account?
+            <a href="/register">Create one</a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

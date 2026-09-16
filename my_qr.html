@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}My QR - CampusFix{% endblock %}
+
+{% block content %}
+
+<div class="qr-page">
+
+    <div class="qr-card">
+
+        <div class="form-icon">
+            🎟️
+        </div>
+
+        <h1>
+            My CampusFix QR
+        </h1>
+
+        <p class="subtitle">
+            Use your personal QR to login quickly next time.
+        </p>
+
+        <div class="qr-user-info">
+
+            <h3>
+                {{ user["name"] }}
+            </h3>
+
+            <p>
+                {{ user["email"] }}
+            </p>
+
+        </div>
+
+        <div
+            id="personal-qr"
+            class="personal-qr"
+        ></div>
+
+        <p class="field-hint">
+
+            📌 Save or screenshot this QR.
+
+            <br>
+
+            Anyone who has this QR can use it
+            to login to this CampusFix account.
+
+        </p>
+
+        <div class="form-actions">
+
+            <a
+                href="/student"
+                class="back-button"
+            >
+                ← Dashboard
+            </a>
+
+            <button
+                type="button"
+                onclick="downloadQR()"
+            >
+                Download QR
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+<script>
+
+const qrUrl = {{ qr_login_url|tojson }};
+
+const qrElement =
+    document.getElementById("personal-qr");
+
+
+const qr = new QRCode(
+
+    qrElement,
+
+    {
+        text: qrUrl,
+
+        width: 240,
+
+        height: 240,
+
+        colorDark: "#080B12",
+
+        colorLight: "#FFFFFF",
+
+        correctLevel:
+            QRCode.CorrectLevel.H
+    }
+
+);
+
+
+function downloadQR() {
+
+    const canvas =
+        qrElement.querySelector("canvas");
+
+    const image =
+        qrElement.querySelector("img");
+
+
+    let dataUrl;
+
+
+    if (canvas) {
+
+        dataUrl =
+            canvas.toDataURL("image/png");
+
+    }
+
+    else if (image) {
+
+        dataUrl =
+            image.src;
+
+    }
+
+    else {
+
+        alert(
+            "QR is still loading. Please try again."
+        );
+
+        return;
+
+    }
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href =
+        dataUrl;
+
+
+    link.download =
+        "CampusFix-Login-QR.png";
+
+
+    link.click();
+
+}
+
+</script>
+
+{% endblock %}
